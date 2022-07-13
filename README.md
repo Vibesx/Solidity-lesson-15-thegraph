@@ -4,6 +4,7 @@
         - If not, you can buy the listing
 2. Sell Page:
     - You can list your NFT on the marketplace
+    - And withdraw proceeds  // TO DO
 
 
 Moralis: How do we tell it to listen to our events?
