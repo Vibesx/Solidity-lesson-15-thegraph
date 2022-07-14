@@ -1,6 +1,8 @@
-import styles from "../styles/Home.module.css";
-import { useMoralisQuery, useMoralis } from "react-moralis";
+import { useMoralis } from "react-moralis";
 import NFTBox from "../components/NFTBox";
+import networkMapping from "../constants/networkMapping.json";
+import GET_ACTIVE_ITEMS from "../constants/subgraphQueries";
+import { useQuery } from "@apollo/client";
 
 export default function Home() {
 	// How do we show the recently listed NFTs?
@@ -13,12 +15,11 @@ export default function Home() {
 	// docs for useMoralisquery: https://github.com/MoralisWeb3/react-moralis#usemoralisquery
 	// example: const { data, error, isLoading } = useMoralisQuery("GameScore");
 	// ActiveItem will be the table name and 2nd parameter is a function describing the query
+	const { isWeb3Enabled, chainId } = useMoralis();
+	const chainIdString = chainId ? parseInt(chainId).toString() : "31337";
+	const marketplaceAddress = networkMapping[chainIdString].NftMarketplace[0];
 
-	const { data: listedNfts, isFetching: fetchingListedNfts } = useMoralisQuery(
-		"ActiveItem",
-		(query) => query.limit(10).descending("tokenId")
-	);
-	const { isWeb3Enabled } = useMoralis();
+	const { loading, error, data: listedNfts } = useQuery(GET_ACTIVE_ITEMS);
 
 	console.log(listedNfts);
 
@@ -27,13 +28,12 @@ export default function Home() {
 			<h1 className="py-4 px-4 font-bold text-2xl">RecentlyListed</h1>
 			<div className="flex flex-wrap">
 				{isWeb3Enabled ? (
-					fetchingListedNfts ? (
+					loading || !listedNfts ? (
 						<div>Loading...</div>
 					) : (
-						listedNfts.map((nft) => {
-							console.log(nft.attributes);
-							const { price, nftAddress, tokenId, marketplaceAddress, seller } =
-								nft.attributes;
+						listedNfts.activeItems.map((nft) => {
+							console.log(nft);
+							const { price, nftAddress, tokenId, seller } = nft;
 							return (
 								<div>
 									{/* NFTBox has 5 params, which we add below as tag properties (I guess that's what they're called? :-?) */}

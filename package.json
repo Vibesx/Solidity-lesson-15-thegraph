@@ -11,6 +11,7 @@
     "moralis:cloud": "moralis-admin-cli watch-cloud-folder --moralisSubdomain x64wiujxzejy.usemoralis.com --autoSave 1 --moralisCloudfolder ./cloudFunctions"
   },
   "dependencies": {
+    "graphql": "^16.5.0",
     "moralis": "^1.8.1",
     "next": "12.2.2",
     "react": "18.2.0",
@@ -19,6 +20,7 @@
     "web3uikit": "^0.1.167"
   },
   "devDependencies": {
+    "@apollo/client": "^3.6.9",
     "autoprefixer": "^10.4.7",
     "dotenv": "^16.0.1",
     "eslint": "8.19.0",
